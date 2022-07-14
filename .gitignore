@@ -131,4 +131,6 @@ dmypy.json
 # vscode
 .vscode
 
+# Extra folders add here
 models/
+data/
