@@ -1,43 +1,51 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from typing import List
 
 
-def get_cols_with_no_nans(df: pd.DataFrame, col_type: str) -> List:
-    """
-    Arguments :
-    df : The dataframe to process
-    col_type : 
-          num : to only get numerical columns with no nans
-          no_num : to only get nun-numerical columns with no nans
-          all : to get any columns with no nans    
-    """
+def filling_missing_values(df: pd.DataFrame) -> pd.DataFrame:
 
-    if col_type == "num":
-        predictors = df.select_dtypes(exclude=["object"])
-    elif col_type == "no_num":
-        predictors = df.select_dtypes(include=["object"])
-    elif col_type == "all":
-        predictors = df
-    else:
-        print("Error : choose a type (num, no_num, all)")
-        return 0
-    cols_with_no_nans = []
-
-    for col in predictors.columns:
-        if not df[col].isnull().any():
-            cols_with_no_nans.append(col)
-
-    return cols_with_no_nans
-
-
-def oneHotEncode(df: pd.DataFrame, colNames: List[str]):
-    for col in colNames:
-        if df[col].dtype == np.dtype("object"):
-            dummies = pd.get_dummies(df[col], prefix=col)
-            df = pd.concat([df, dummies], axis=1)
-
-            # drop the encoded column
-            df.drop([col], axis=1, inplace=True)
+    df["PoolQC"] = df["PoolQC"].fillna("no")
+    df["MiscFeature"] = df["MiscFeature"].fillna("no")
+    df["Alley"] = df["Alley"].fillna("no")
+    df["Fence"] = df["Fence"].fillna("no")
+    df["FireplaceQu"] = df["FireplaceQu"].fillna("no")
+    df["GarageCond"] = df["GarageCond"].fillna("no")
+    df["GarageQual"] = df["GarageQual"].fillna("no")
+    df["GarageFinish"] = df["GarageFinish"].fillna("no")
+    df["BsmtExposure"] = df["BsmtExposure"].fillna("no")
+    df["BsmtCond"] = df["BsmtCond"].fillna("no")
+    df["BsmtQual"] = df["BsmtQual"].fillna("no")
+    df["BsmtFinType2"] = df["BsmtFinType2"].fillna("no")
+    df["BsmtFinType1"] = df["BsmtFinType1"].fillna("no")
+    df["Fence"] = df["Fence"].fillna("no")
+    df["MasVnrType"] = df["MasVnrType"].fillna("no")
+    df["GarageYrBlt"] = df["GarageYrBlt"].fillna(0)
+    df["GarageType"] = df["GarageType"].fillna(0)
+    df["GarageArea"] = df["GarageArea"].fillna(0)
+    df["GarageCars"] = df["GarageCars"].fillna(0)
+    df["BsmtFinSF1"] = df["BsmtFinSF1"].fillna(0)
+    df["BsmtFinSF2"] = df["BsmtFinSF2"].fillna(0)
+    df["MasVnrArea"] = df["MasVnrArea"].fillna(0)
+    df["BsmtFullBath"] = df["BsmtFullBath"].fillna(0)
+    df["BsmtHalfBath"] = df["BsmtHalfBath"].fillna(0)
+    df["BsmtUnfSF"] = df["BsmtUnfSF"].fillna(0)
+    df["TotalBsmtSF"] = df["TotalBsmtSF"].fillna(0)
 
     return df
+
+
+def mae(y_test, y_pred):
+    """
+  Calculates mean absolute error between y_test and y_preds.
+  """
+    return tf.metrics.mean_absolute_error(y_test, y_pred)
+
+
+def mse(y_test, y_pred):
+    """
+  Calculates mean squared error between y_test and y_preds.
+  """
+    return tf.metrics.mean_squared_error(y_test, y_pred)
+
